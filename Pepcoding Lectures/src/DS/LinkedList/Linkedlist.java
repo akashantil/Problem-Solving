@@ -122,13 +122,14 @@ public class Linkedlist {
 
 		}
 		temp.next = null;
-		tail=temp;
+		tail = temp;
 
 		size--;
 
 	}
 
-	public void removefirst() {
+	public int removefirst() {
+		int temp = head.data;
 
 		if (size != 1)
 			head = head.next;
@@ -136,28 +137,33 @@ public class Linkedlist {
 			head = null;
 		size--;
 
+		return temp;
+
 	}
 
-	public void removeAt(int idx) {
+	public int removeAt(int idx) {
 
 		if (size == 0) {
 			System.out.println("Empty list");
-			return;
+			return -1;
 		}
 
 		if (idx < 0 || idx >= size) {
 			System.out.println("Invalid Index");
-			return;
+			return -1;
 		}
 
+		int temp = 0;
 		if (idx == 0) {
-			if (size != 1)
+			if (size != 1) {
+				temp = head.data;
 				head = head.next;
-			else
-				head = null;
-			size--;
 
-			return;
+			} else {
+				temp = head.data;
+				head = null;
+			}
+			size--;
 
 		}
 
@@ -166,9 +172,10 @@ public class Linkedlist {
 		for (int i = 1; i < idx; i++) {
 			iterator = iterator.next;
 		}
+		temp = iterator.data;
 		iterator.next = iterator.next.next;
 
-		size--;
+		return temp;
 
 	}
 

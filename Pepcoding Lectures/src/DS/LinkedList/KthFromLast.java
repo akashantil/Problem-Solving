@@ -12,9 +12,9 @@ public class KthFromLast extends Linkedlist {
 		ll.addLast(30);
 		ll.addLast(40);
 		ll.addLast(50);
-//		ll.addLast(60);
-//		ll.addLast(70);
-//		ll.addLast(80);
+		ll.addLast(60);
+		ll.addLast(70);
+		ll.addLast(80);
 		ll.display();
 		int k = 2;
 		System.out.println(solve(ll, k));
