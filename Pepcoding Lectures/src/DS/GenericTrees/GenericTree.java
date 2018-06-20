@@ -1,7 +1,9 @@
-package GenericTrees;
+package DS.GenericTrees;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class GenericTree {
 
@@ -10,6 +12,14 @@ public class GenericTree {
 		int data;
 		ArrayList<node> children = new ArrayList<>();
 	}
+
+	// private class Node {
+	// int data;
+	// Node head;
+	// Node tail;
+	// ArrayList<Node> children = new ArrayList<>();
+	//
+	// }
 
 	private int size;
 	private node root;
@@ -149,6 +159,166 @@ public class GenericTree {
 		}
 
 		return oh + 1;
+
+	}
+
+	public void removeLeaves() {
+		removeLeaves(this.root);
+
+	}
+
+	private void removeLeaves(node nd) {
+
+		for (int i = 0; i < nd.children.size(); i++) {
+			node child = nd.children.get(i);
+
+			if (child.children.size() == 0) {
+				nd.children.remove(child);
+				i--;
+			}
+
+		}
+
+	}
+
+	public void preOrder() {
+		preOrder(this.root);
+
+	}
+
+	private void preOrder(node nd) {
+
+		System.out.print(nd.data + "  ");
+		for (node c : nd.children) {
+			preOrder(c);
+		}
+	}
+
+	public void postOrder() {
+		postOrder(this.root);
+
+	}
+
+	private void postOrder(node nd) {
+
+		for (node c : nd.children) {
+			postOrder(c);
+		}
+		System.out.print(nd.data + " ");
+	}
+
+	public void levelOrder() {
+
+		LinkedList<node> queue = new LinkedList<>();
+		queue.addLast(this.root);
+
+		while (queue.size() > 0) {
+			node rem = queue.removeFirst();
+			System.out.print(rem.data + " ");
+			for (node x : rem.children) {
+				queue.addLast(x);
+
+			}
+
+		}
+	}
+
+	public void levelOrderLW() {
+
+		LinkedList<node> queue = new LinkedList<>();
+		queue.addLast(this.root);
+		node temp = new node();
+		temp.data = -1;
+		queue.add(temp);
+
+		while (queue.size() > 1) {
+			node rem = queue.removeFirst();
+			if (rem.data == -1) {
+
+				System.out.println();
+				queue.add(temp);
+
+			} else {
+				System.out.print(rem.data + " ");
+			}
+			for (node x : rem.children) {
+				queue.addLast(x);
+
+			}
+
+		}
+	}
+
+	public void levelOrderZigZag() {
+
+		Stack<node> stack1 = new Stack<>();
+		Stack<node> stack2 = new Stack<>();
+
+		stack1.push(this.root);
+		while (stack1.size() > 0 || stack2.size() > 0) {
+
+			while (!stack1.isEmpty()) {
+				node temp = stack1.pop();
+
+				System.out.print(temp.data + " ");
+				for (node x : temp.children)
+					stack2.push(x);
+
+			}
+			if (stack1.isEmpty())
+				System.out.println();
+			while (!stack2.isEmpty()) {
+
+				node temp = stack2.pop();
+
+				System.out.print(temp.data + " ");
+				for (int i = temp.children.size() - 1; i >= 0; i--)
+					stack1.push(temp.children.get(i));
+
+			}
+			if (stack2.isEmpty())
+				System.out.println();
+
+		}
+
+	}
+
+	public void makeLinearFake() {
+
+		makeLinearFake(this.root);
+
+	}
+
+	private void makeLinearFake(node nd) {
+
+		for (node x : nd.children) {
+
+			makeLinearFake(x);
+
+		}
+		for (int i = nd.children.size() - 1; i >= 1; i--) {
+
+			node im1 = nd.children.get(i - 1);
+
+			node cn = nd.children.get(i);
+
+			nd.children.remove(i);
+
+			node tail = getTail(im1);
+			tail.children.add(cn);
+
+		}
+
+	}
+
+	private node getTail(node cn) {
+
+		node temp = cn;
+		while (temp.children.size() != 0) {
+			temp = temp.children.get(0);
+		}
+
+		return temp;
 
 	}
 
