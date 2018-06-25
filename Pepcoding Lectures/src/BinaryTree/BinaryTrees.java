@@ -1,7 +1,10 @@
 package BinaryTree;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.logging.Level;
 
 public class BinaryTrees {
 
@@ -115,27 +118,28 @@ public class BinaryTrees {
 
 	}
 
-	public boolean find(int data) {
+	public Node find(int data) {
 		return this.find(this.root, data);
 
 	}
 
-	private boolean find(Node node, int data) {
+	private Node find(Node node, int data) {
 
 		if (node == null) {
-			return false;
+			// return false;
+			return new Node();
 		}
 		if (node.data == data)
-			return true;
+			return node;
 
-		boolean left = find(node.left, data);
-		if (left)
-			return true;
-		boolean right = find(node.right, data);
-		if (right)
-			return true;
+		Node left = find(node.left, data);
+		if (left != null)
+			return left;
+		Node right = find(node.right, data);
+		if (right != null)
+			return right;
 
-		return false;
+		return new Node();
 
 	}
 
@@ -195,40 +199,76 @@ public class BinaryTrees {
 
 	}
 
-	public ArrayList<Integer> nodeToRoot(int data) {
+	// public ArrayList<Integer> nodeToRoot(int data) {
+	//
+	// return nodeToRoot(this.root, data);
+	//
+	// }
+	//
+	// private ArrayList<Integer> nodeToRoot(Node node, int data) {
+	//
+	// if (node == null) {
+	// ArrayList<Integer> a = new ArrayList<>();
+	// return a;
+	// }
+	// if (node.data == data) {
+	//
+	// ArrayList<Integer> a = new ArrayList<>();
+	// a.add(node.data);
+	// return a;
+	// }
+	//
+	// ArrayList<Integer> left = nodeToRoot(node.left, data);
+	// if (left.size() != 0) {
+	// left.add(node.data);
+	// return left;
+	// }
+	// ArrayList<Integer> right = nodeToRoot(node.right, data);
+	// if (right.size() != 0) {
+	// right.add(node.data);
+	// return right;
+	// }
+	//
+	// // return left or right or new empty array list dosent matter as at this
+	// // point it
+	// // means we havent found ans and both left right will be empty
+	// return left;
+	//
+	// }
+	public ArrayList<Node> nodeToRoot(int data) {
 
 		return nodeToRoot(this.root, data);
 
 	}
 
-	private ArrayList<Integer> nodeToRoot(Node node, int data) {
+	private ArrayList<Node> nodeToRoot(Node node, int data) {
 
 		if (node == null) {
-			ArrayList<Integer> a = new ArrayList<>();
+			ArrayList<Node> a = new ArrayList<>();
 			return a;
 		}
 		if (node.data == data) {
 
-			ArrayList<Integer> a = new ArrayList<>();
-			a.add(node.data);
+			ArrayList<Node> a = new ArrayList<>();
+			a.add(node);
 			return a;
 		}
 
-		ArrayList<Integer> left = nodeToRoot(node.left, data);
+		ArrayList<Node> left = nodeToRoot(node.left, data);
 		if (left.size() != 0) {
-			left.add(node.data);
+			left.add(node);
 			return left;
 		}
-		ArrayList<Integer> right = nodeToRoot(node.right, data);
+		ArrayList<Node> right = nodeToRoot(node.right, data);
 		if (right.size() != 0) {
-			right.add(node.data);
+			right.add(node);
 			return right;
 		}
 
 		// return left or right or new empty array list dosent matter as at this
 		// point it
 		// means we havent found ans and both left right will be empty
-		return left;
+		return new ArrayList<>();
 
 	}
 
@@ -249,8 +289,176 @@ public class BinaryTrees {
 
 		}
 
-		targetSumRoottoLeaf(node.left, low, high, ssf + node.data, psf + node.data+"-> ");
-		targetSumRoottoLeaf(node.right, low, high, ssf + node.data, psf + node.data+"-> ");
+		targetSumRoottoLeaf(node.left, low, high, ssf + node.data, psf + node.data + "-> ");
+		targetSumRoottoLeaf(node.right, low, high, ssf + node.data, psf + node.data + "-> ");
+
+	}
+
+	public void dataFromNtoK(int k, int data) {
+
+		dataFromNtoK(this.root, data, k);
+
+	}
+
+	private void dataFromNtoK(Node node, int data, int k) {
+
+		ArrayList<Node> temp = nodeToRoot(data);
+		for (int i = 0; i <= k; i++) {
+
+			if (i == 0) {
+				dataFromNtoKDeep(temp.get(i), k - i);
+
+			} else if (i < k) {
+				Node curr = temp.get(i);
+				Node prev = temp.get(i - 1);
+
+				if (curr.left == prev) {
+					dataFromNtoKDeep(curr.right, k - i - 1);
+				} else {
+					dataFromNtoKDeep(curr.left, k - i - 1);
+				}
+			} else {
+				System.out.println(temp.get(i).data);
+			}
+
+		}
+
+	}
+
+	private void dataFromNtoKDeep(Node node, int k) {
+		if (node == null)
+			return;
+		if (k == 0) {
+			System.out.println(node.data);
+			return;
+		}
+
+		dataFromNtoKDeep(node.left, k - 1);
+		dataFromNtoKDeep(node.right, k - 1);
+
+	}
+
+	// public BinaryTrees(int[] preorder, int[] inorder) {
+	// this.root = construct(preorder, inorder, 0, postorder.length - 1, 0,
+	// preorder.length - 1);
+	//
+	// }
+
+	private Node construct(int[] preorder, int[] inorder, int psi, int pei, int isi, int iei) {
+
+		if (psi < pei || isi > iei) {
+			return null;
+		}
+		int si = -1;
+		Node child = new Node();
+		child.data = preorder[psi];
+
+		for (int i = isi; i <= iei; i++) {
+			if (child.data == inorder[i]) {
+
+				si = i;
+				break;
+			}
+		}
+		int noe = si - isi;
+		child.left = construct(preorder, inorder, psi + 1, psi + noe, isi, si - 1);
+		child.right = construct(preorder, inorder, psi + noe + 1, pei, si + 1, iei);
+
+		return child;
+
+	}
+
+	public BinaryTrees(int[] postorder, int[] inorder) {
+		this.root = construct2(postorder, inorder, 0, postorder.length - 1, 0, postorder.length - 1);
+
+	}
+
+	public Node construct2(int[] postorder, int[] inorder, int psi, int pei, int isi, int iei) {
+
+		if (pei < psi || isi > iei) {
+			return null;
+		}
+		int si = -1;
+		Node child = new Node();
+		child.data = postorder[pei];
+
+		for (int i = isi; i <= iei; i++) {
+			if (child.data == inorder[i]) {
+
+				si = i;
+				break;
+			}
+		}
+		int noe = si - isi;
+		child.left = construct2(postorder, inorder, psi, pei - noe, isi, si - 1);
+		child.right = construct2(postorder, inorder, pei - noe + 1, pei - 1, si + 1, iei);
+
+		return child;
+
+	}
+
+	public void preo() {
+		preo(this.root);
+
+	}
+
+	private void preo(Node node) {
+		if (node == null)
+			return;
+
+		System.out.print(node.data + " -> ");
+		preo(node.left);
+		preo(node.right);
+
+	}
+
+	public void ino() {
+		ino(this.root);
+
+	}
+
+	private void ino(Node node) {
+		if (node == null)
+			return;
+
+		ino(node.left);
+		System.out.print(node.data + " -> ");
+		ino(node.right);
+
+	}
+
+	public void posto() {
+		posto(this.root);
+
+	}
+
+	private void posto(Node node) {
+		if (node == null)
+			return;
+
+		posto(node.left);
+
+		posto(node.right);
+		System.out.print(node.data + " -> ");
+
+	}
+
+	public void levelOrder() {
+		levelOrder(this.root);
+
+	}
+
+	private void levelOrder(Node node) {
+		LinkedList<Node> qu = new LinkedList<>();
+		qu.add(node);
+		while (!qu.isEmpty()) {
+			Node a = qu.removeFirst();
+			System.out.print(a.data + " ");
+			if (a.left != null)
+				qu.addLast(a.left);
+			if (a.right != null)
+				qu.addLast(a.right);
+		}
 
 	}
 }
