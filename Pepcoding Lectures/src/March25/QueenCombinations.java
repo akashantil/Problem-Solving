@@ -29,6 +29,7 @@ public class QueenCombinations {
 				path(roq, asf + ques.charAt(i));
 
 			}
+			
 
 		}
 

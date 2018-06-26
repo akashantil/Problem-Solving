@@ -338,24 +338,23 @@ public class BinaryTrees {
 
 	}
 
-	// public BinaryTrees(int[] preorder, int[] inorder) {
-	// this.root = construct(preorder, inorder, 0, postorder.length - 1, 0,
-	// preorder.length - 1);
-	//
-	// }
+	public BinaryTrees(int[] preorder, int[] inorder) {
+		this.root = construct(preorder, inorder, 0, preorder.length - 1, 0, inorder.length - 1);
+
+	}
 
 	private Node construct(int[] preorder, int[] inorder, int psi, int pei, int isi, int iei) {
 
-		if (psi < pei || isi > iei) {
+		if (psi > pei || isi > iei) {
 			return null;
 		}
 		int si = -1;
 		Node child = new Node();
 		child.data = preorder[psi];
+		this.size++;
 
 		for (int i = isi; i <= iei; i++) {
 			if (child.data == inorder[i]) {
-
 				si = i;
 				break;
 			}
@@ -368,10 +367,11 @@ public class BinaryTrees {
 
 	}
 
-	public BinaryTrees(int[] postorder, int[] inorder) {
-		this.root = construct2(postorder, inorder, 0, postorder.length - 1, 0, postorder.length - 1);
-
-	}
+	// public BinaryTrees(int[] postorder, int[] inorder) {
+	// this.root = construct2(postorder, inorder, 0, postorder.length - 1, 0,
+	// postorder.length - 1);
+	//
+	// }
 
 	public Node construct2(int[] postorder, int[] inorder, int psi, int pei, int isi, int iei) {
 
@@ -390,8 +390,9 @@ public class BinaryTrees {
 			}
 		}
 		int noe = si - isi;
-		child.left = construct2(postorder, inorder, psi, pei - noe, isi, si - 1);
+
 		child.right = construct2(postorder, inorder, pei - noe + 1, pei - 1, si + 1, iei);
+		child.left = construct2(postorder, inorder, psi, pei - noe, isi, si - 1);
 
 		return child;
 
@@ -461,4 +462,206 @@ public class BinaryTrees {
 		}
 
 	}
+
+	public class Pair {
+		int num;
+		String bin;
+
+		Pair(int num, String bin) {
+			this.num = num;
+			this.bin = bin;
+		}
+	}
+
+	public void PrintBinaries(int max) {
+
+		LinkedList<Pair> q = new LinkedList<>();
+		Pair a = new Pair(1, 1 + "");
+		q.add(a);
+
+		while (!q.isEmpty()) {
+
+			a = q.removeFirst();
+			System.out.println(a.num + "-> " + a.bin);
+
+			Pair leftchild = new Pair(a.num * 2, a.bin + "0");
+			if (leftchild.num <= max)
+				q.addLast(leftchild);
+			else
+				continue;
+
+			Pair rightchild = new Pair((a.num * 2) + 1, a.bin + "1");
+			if (rightchild.num <= max)
+				q.addLast(rightchild);
+			else
+				continue;
+
+		}
+
+	}
+
+	public int diameter() {
+		return diameter(this.root);
+	}
+
+	private int diameter(Node node) {
+		if (node == null)
+			return 0;
+
+		int left = diameter(node.left);
+		int right = diameter(node.right);
+
+		int third = height(node.left) + height(node.right) + 2;
+
+		return Math.max(third, Math.max(left, right));
+
+	}
+
+	private class DiaPair {
+		int ht;
+		int dia;
+
+		DiaPair(int ht, int dia) {
+			this.ht = ht;
+			this.dia = dia;
+		}
+	}
+
+	public int diameterSmart() {
+		DiaPair ab = diameterSmart(this.root);
+		return ab.dia;
+	}
+
+	private DiaPair diameterSmart(Node node) {
+		if (node == null) {
+			DiaPair a = new DiaPair(-1, 0);
+			return a;
+		}
+
+		DiaPair left = diameterSmart(node.left);
+		DiaPair right = diameterSmart(node.right);
+
+		int f1 = Math.max(left.ht, right.ht) + 1;
+		int f2 = Math.max(left.dia, right.dia);
+		DiaPair res = new DiaPair(f1, Math.max(f2, left.ht + right.ht + 2));
+		return res;
+
+	}
+
+	public class BalPair {
+		int height;
+		boolean balanced;
+	}
+
+	public boolean isBalanced() {
+		BalPair b = isBalanced(this.root);
+		return b.balanced;
+	}
+
+	private BalPair isBalanced(Node node) {
+		if (node == null) {
+			BalPair a = new BalPair();
+			a.height = -1;
+			a.balanced = true;
+			return a;
+		}
+
+		BalPair left = isBalanced(node.left);
+		BalPair right = isBalanced(node.right);
+		if (left.balanced == false || right.balanced == false) {
+			BalPair a = new BalPair();
+			a.balanced = false;
+			return a;
+
+		}
+
+		else if (Math.abs(left.height - right.height) > 1) {
+			BalPair a = new BalPair();
+			a.balanced = false;
+			return a;
+
+		}
+
+		BalPair a = new BalPair();
+		a.balanced = true;
+		a.height = Math.max(left.height, right.height) + 1;
+
+		return a;
+
+	}
+
+	private static class bstPair {
+		int max;
+		int min;
+		boolean bstCheck;
+		int maxSize;
+		Node parent;
+
+	}
+
+	public boolean isBst() {
+		bstPair a = isBst(this.root);
+		System.out.println("Root : "+a.parent.data);
+		System.out.println("Size : "+a.maxSize);
+		return a.bstCheck;
+
+	}
+
+	private bstPair isBst(Node node) {
+		if (node == null) {
+			bstPair a = new bstPair();
+			a.max = Integer.MIN_VALUE;
+			a.min = Integer.MAX_VALUE;
+			a.maxSize = 0;
+			a.parent = null;
+			a.bstCheck = true;
+			return a;
+
+		}
+
+		bstPair left = isBst(node.left);
+		bstPair right = isBst(node.right);
+		// if (left.bstCheck == false) {
+		//
+		// bstPair a = new bstPair();
+		//
+		// a.bstCheck = false;
+		// return a;
+		//
+		// }
+
+		// if (right.bstCheck == false) {
+		// bstPair a = new bstPair();
+		// a.bstCheck = false;
+		// return a;
+		//
+		// }
+
+		bstPair a = new bstPair();
+
+		a.min = Math.min(node.data, Math.min(right.min, left.min));
+		a.max = Math.max(node.data, Math.max(right.max, left.max));
+
+		if (left.bstCheck == true && right.bstCheck == true && node.data > left.max && node.data < right.min) {
+
+			a.parent = node;
+			a.bstCheck = true;
+			a.maxSize = left.maxSize + right.maxSize + 1;
+
+		} else {
+			a.bstCheck = false;
+			if (left.maxSize > right.maxSize) {
+				a.maxSize = left.maxSize;
+				a.parent = left.parent;
+			} else {
+				a.maxSize = right.maxSize;
+				a.parent = right.parent;
+
+			}
+		}
+
+		return a;
+
+	}
+
 }
