@@ -13,11 +13,15 @@ public class BringLessThanKTogetherInMinSwaps {
 		for (int i = 0; i < soa; i++)
 			arr[i] = sc.nextInt();
 		int k = sc.nextInt();
+		int ws = 0;
+		for (int i = 0; i < soa; i++)
+			if (arr[i] <= k)
+				ws++;
 
 		int countinvalid = 0;
 		int minswap = Integer.MAX_VALUE;
 
-		for (int i = 0; i < k; i++)
+		for (int i = 0; i < ws; i++)
 			if (arr[i] > k)
 				countinvalid++;
 
