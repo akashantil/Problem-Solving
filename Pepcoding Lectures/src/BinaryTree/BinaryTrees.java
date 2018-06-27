@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.Stack;
 import java.util.logging.Level;
 
 public class BinaryTrees {
@@ -601,8 +602,8 @@ public class BinaryTrees {
 
 	public boolean isBst() {
 		bstPair a = isBst(this.root);
-		System.out.println("Root : "+a.parent.data);
-		System.out.println("Size : "+a.maxSize);
+		System.out.println("Root : " + a.parent.data);
+		System.out.println("Size : " + a.maxSize);
 		return a.bstCheck;
 
 	}
@@ -661,6 +662,142 @@ public class BinaryTrees {
 		}
 
 		return a;
+
+	}
+
+	private class itPair {
+
+		Node node;
+
+		boolean isPrinted;
+		boolean leftCall;
+		boolean rightCall;
+
+		private itPair(Node node, boolean isPrinted, boolean leftCall, boolean rightCall) {
+
+			this.node = node;
+			this.isPrinted = isPrinted;
+			this.leftCall = leftCall;
+			this.rightCall = rightCall;
+		}
+	}
+
+	public void preIt() {
+		preIt(this.root);
+
+	}
+
+	private void preIt(Node node) {
+
+		LinkedList<itPair> st = new LinkedList<>();
+
+		itPair a = new itPair(node, false, false, false);
+
+		st.addFirst(a);
+		while (!st.isEmpty()) {
+
+			itPair x = st.peek();
+
+			if (x.isPrinted == false) {
+
+				x.isPrinted = true;
+				System.out.print(x.node.data + "-> ");
+			} else if (x.leftCall == false) {
+				x.leftCall = true;
+				if (x.node.left != null) {
+					itPair y = new itPair(x.node.left, false, false, false);
+					st.addFirst(y);
+				}
+			} else if (x.rightCall == false) {
+				x.rightCall = true;
+				if (x.node.right != null) {
+					itPair y = new itPair(x.node.right, false, false, false);
+					st.addFirst(y);
+				}
+			} else
+				st.removeFirst();
+
+		}
+
+	}
+
+	public void inIt() {
+		inIt(this.root);
+
+	}
+
+	private void inIt(Node node) {
+
+		LinkedList<itPair> st = new LinkedList<>();
+
+		itPair a = new itPair(node, false, false, false);
+
+		st.addFirst(a);
+		while (!st.isEmpty()) {
+
+			itPair x = st.peek();
+
+			if (x.leftCall == false) {
+				x.leftCall = true;
+				if (x.node.left != null) {
+					itPair y = new itPair(x.node.left, false, false, false);
+					st.addFirst(y);
+				}
+			} else if (x.isPrinted == false) {
+
+				x.isPrinted = true;
+				System.out.print(x.node.data + "-> ");
+			}
+
+			else if (x.rightCall == false) {
+				x.rightCall = true;
+				if (x.node.right != null) {
+					itPair y = new itPair(x.node.right, false, false, false);
+					st.addFirst(y);
+				}
+			} else
+				st.removeFirst();
+
+		}
+
+	}
+
+	public void postIt() {
+		postIt(this.root);
+
+	}
+
+	private void postIt(Node node) {
+
+		LinkedList<itPair> st = new LinkedList<>();
+
+		itPair a = new itPair(node, false, false, false);
+
+		st.addFirst(a);
+		while (!st.isEmpty()) {
+
+			itPair x = st.peek();
+
+			if (x.leftCall == false) {
+				x.leftCall = true;
+				if (x.node.left != null) {
+					itPair y = new itPair(x.node.left, false, false, false);
+					st.addFirst(y);
+				}
+			} else if (x.rightCall == false) {
+				x.rightCall = true;
+				if (x.node.right != null) {
+					itPair y = new itPair(x.node.right, false, false, false);
+					st.addFirst(y);
+				}
+			} else if (x.isPrinted == false) {
+
+				x.isPrinted = true;
+				System.out.print(x.node.data + "-> ");
+			} else
+				st.removeFirst();
+
+		}
 
 	}
 
