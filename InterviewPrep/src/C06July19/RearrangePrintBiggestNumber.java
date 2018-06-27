@@ -19,8 +19,8 @@ public class RearrangePrintBiggestNumber {
 			if (a != b)
 				return b - a;
 			else {
-				int x = Integer.parseInt(this.num+o.num);
-				int y = Integer.parseInt(o.num+this.no);
+				int x = Integer.parseInt(this.num + o.num);
+				int y = Integer.parseInt(o.num + this.no);
 				return y - x;
 			}
 
