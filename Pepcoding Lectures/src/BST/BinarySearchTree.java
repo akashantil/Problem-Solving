@@ -179,6 +179,8 @@ public class BinarySearchTree {
 				// node.right = a;
 				// } else
 
+				// can only add to leaves as it will change structure
+
 				addNode(node.right, data);
 			} else {
 				Node a = new Node();
