@@ -25,9 +25,21 @@ public class Client {
 //		bst.addNode(26);
 //		bst.display();
 		
-		bst.removeNode(50);
+//		bst.removeNode(50);
 		System.out.println("*************");
 //		bst.addNode(26);
+//		bst.display();
+		bst.addNode(30);
+		bst.addNode(70);
+		System.out.println("*************");
+//		bst.display();
+		
+		
+		System.out.println("*************");
+		bst.removeNode(30);
+		bst.removeNode(62);
+		bst.removeNode(50);
+		System.out.println("*************");
 		bst.display();
 		
 		
