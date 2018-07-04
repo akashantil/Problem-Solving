@@ -26,9 +26,9 @@ public class graphClient {
 		
 		g.display();
 		
-		g.removeVertex("D");
-		
-		g.display();
+//		g.removeVertex("D");
+//		
+//		g.display();
 		
 	}
 

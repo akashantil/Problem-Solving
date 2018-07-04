@@ -38,13 +38,13 @@ public class CheckBleak {
 
 			}
 			if(start+c==n){
-				System.out.println("YES");
+				System.out.println("No");
 				return;
 			}
 			start++;
 
 		}
-		System.out.println("NO");
+		System.out.println("Yes");
 
 	}
 

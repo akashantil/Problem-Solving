@@ -1,4 +1,4 @@
-package temp;
+package SearchingAndSorting;
 
 import java.util.Scanner;
 
