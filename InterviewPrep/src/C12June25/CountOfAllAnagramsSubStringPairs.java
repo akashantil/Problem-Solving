@@ -43,9 +43,12 @@ public class CountOfAllAnagramsSubStringPairs {
 	ArrayList<String> keys= new ArrayList<>(map.keySet());
 	int count=0;
 	for(int i=0;i<keys.size();i++){
-		count+=map.get(keys.get(i));
+		
+		int curr=map.get(keys.get(i));
+		count+=(curr*(curr-1))/2;
 		
 	}
+	
 	System.out.println(count);
 
 	}
