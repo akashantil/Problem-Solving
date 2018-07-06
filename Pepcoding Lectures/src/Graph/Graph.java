@@ -1,10 +1,13 @@
 package Graph;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
+
+import PriorityQueue.GenericPriorityQueue;
 
 public class Graph {
 	private HashMap<String, HashMap<String, Integer>> vts = new HashMap<>();
@@ -630,6 +633,182 @@ public class Graph {
 			}
 		}
 		return true;
+
+	}
+
+	public class dPair implements Comparable<dPair> {
+		int csf;
+		String psf;
+		String vname;
+
+		dPair(int csf, String psf, String vname) {
+			this.csf = csf;
+			this.psf = psf;
+			this.vname = vname;
+		}
+
+		@Override
+
+		public int compareTo(dPair o) {
+			// TODO Auto-generated method stub
+			return this.csf - o.csf;
+		}
+
+		public String toString() {
+			return "[" + this.psf + " @ " + this.csf + "]";
+		}
+	}
+
+	public void dijkstra(String src) {
+		GenericPriorityQueue<dPair> pq = new GenericPriorityQueue<Graph.dPair>();
+
+		HashMap<String, dPair> res = new HashMap<>();
+
+		for (String a : vts.keySet()) {
+
+			dPair temp = new dPair(Integer.MAX_VALUE, "", a);
+
+			if (a.equals(src)) {
+				temp.csf = 0;
+				temp.psf = "A";
+			}
+
+			res.put(a, temp);
+			pq.add(temp);
+		}
+
+		while (pq.size() > 0) {
+			dPair x = pq.remove();
+
+			for (String nbr : vts.get(x.vname).keySet()) {
+
+				int newcost = x.csf + vts.get(x.vname).get(nbr);
+				String newPath = x.psf + nbr;
+
+				dPair op = res.get(nbr);
+
+				if (newcost < op.csf) {
+
+					op.csf = newcost;
+					op.psf = newPath;
+
+					pq.updateElement(op);
+
+				}
+
+			}
+
+		}
+		System.out.println(res);
+
+	}
+
+	public void dijkastraNP(String src) {
+		PriorityQueue<dPair> pq = new PriorityQueue<>();
+		HashMap<String, dPair> map = new HashMap<>();
+		HashSet<String> visited = new HashSet<>();
+
+		pq.add(new dPair(0, src, src));
+		map.put("A", new dPair(0, src, src));
+
+		while (!pq.isEmpty()) {
+
+			dPair rp = pq.remove();
+
+			if (visited.contains(rp.vname))
+				continue;
+			visited.add(rp.vname);
+
+			for (String a : vts.get(rp.vname).keySet()) {
+
+				int newcost = rp.csf + vts.get(rp.vname).get(a);
+				String newPath = rp.psf + a;
+
+				if (map.containsKey(a) == false || newcost < map.get(a).csf) {
+					dPair np = new dPair(newcost, newPath, a);
+
+					map.put(a, np);
+					pq.add(np);
+				}
+			}
+
+		}
+
+		System.out.println(map);
+
+	}
+
+	public class pPair implements Comparable<pPair> {
+		int csf;
+		String pname;
+		String vname;
+
+		pPair(int csf, String pname, String vname) {
+			this.csf = csf;
+			this.pname = pname;
+			this.vname = vname;
+		}
+
+		@Override
+
+		public int compareTo(pPair o) {
+			// TODO Auto-generated method stub
+			return this.csf - o.csf;
+		}
+
+	}
+
+	public Graph prims() {
+		GenericPriorityQueue<pPair> pq = new GenericPriorityQueue<>();
+		Graph mst = new Graph();
+
+		HashMap<String, pPair> res = new HashMap<>();
+
+		for (String a : vts.keySet()) {
+
+			pPair temp = new pPair(Integer.MAX_VALUE, null, a);
+
+			res.put(a, temp);
+			pq.add(temp);
+		}
+
+		while (pq.size() > 0) {
+			pPair rp = pq.remove();
+
+			for (String nbr : vts.get(rp.vname).keySet()) {
+				
+				pPair nbrpair = res.get(nbr);
+				
+				
+
+				int newCost = vts.get(rp.vname).get(nbr);
+
+				if (!mst.containsVertex(nbrpair.vname)) {
+
+					if (newCost < nbrpair.csf) {
+
+						nbrpair.pname = rp.vname;
+						nbrpair.csf = newCost;
+
+						pq.updateElement(nbrpair);
+
+						// add vertex to mst
+
+						mst.addvertex(rp.vname);
+
+						if (rp.pname != null) {
+							mst.addedge(rp.vname, rp.pname, rp.csf);
+						}
+
+						// add edges
+
+					}
+				}
+
+			}
+
+		}
+		return mst;
 
 	}
 

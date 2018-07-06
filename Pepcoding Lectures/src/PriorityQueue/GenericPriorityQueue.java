@@ -15,10 +15,11 @@ public class GenericPriorityQueue<T extends Comparable<T>> {
 		this.reverse = x;
 
 	}
-	public GenericPriorityQueue(T [] arr){
-		for(T a:arr)
+
+	public GenericPriorityQueue(T[] arr) {
+		for (T a : arr)
 			list.add(a);
-		for(int i=list.size()-1;i>=0;i--){
+		for (int i = list.size() - 1; i >= 0; i--) {
 			DownHeapify(i);
 		}
 	}
@@ -109,6 +110,23 @@ public class GenericPriorityQueue<T extends Comparable<T>> {
 			return list.get(j).compareTo(list.get(i));
 		}
 
+	}
+
+	public void updateElement(T val){
+		int idx=-1;
+		
+		for(int i=0;i<list.size();i++){
+			if(list.get(i).equals(val)){
+				idx=i;
+				break;
+			}
+		}
+		if(idx!=-1){
+		this.UpHeapify(idx);
+		this.DownHeapify(idx);
+		}
+		
+		
 	}
 
 }

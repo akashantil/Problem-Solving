@@ -38,10 +38,15 @@ public class graphClient {
 		// g.display();
 		// g.bfs("A", "G");
 		// g.dfs("A", "G");
+//		g.dijkstra("A");
+//		g.dijkastraNP("A");
+		
+		Graph x= g.prims();
+		x.display();
 
-		 System.out.println(g.gcc());
-		 System.out.println(g.cyclic());
-		System.out.println(g.isBipartite());
+//		 System.out.println(g.gcc());
+//		 System.out.println(g.cyclic());
+//		System.out.println(g.isBipartite());
 	}
 
 }
