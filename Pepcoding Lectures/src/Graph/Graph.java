@@ -10,7 +10,7 @@ import java.util.PriorityQueue;
 import PriorityQueue.GenericPriorityQueue;
 
 public class Graph {
-	private HashMap<String, HashMap<String, Integer>> vts = new HashMap<>();
+	protected HashMap<String, HashMap<String, Integer>> vts = new HashMap<>();
 
 	public Graph() {
 
