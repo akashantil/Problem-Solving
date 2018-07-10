@@ -1,5 +1,6 @@
 package LRJuly18;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -14,12 +15,42 @@ public class NoMinNoMax {
 			int k = sc.nextInt();
 
 			int[] arr = new int[soa];
+
 			for (int j = 0; j < soa; j++)
 				arr[j] = sc.nextInt();
 
 			Arrays.sort(arr);
+
+			solve(arr, 0, new ArrayList<>(), k);
+			System.out.println(product);
+			product = 1;
 		}
 
+	}
+
+	static long product = 1;
+	
+
+	public static void solve(int[] arr, int idx, ArrayList<Integer> res, int k) {
+
+		if (res.size() == k) {
+//			System.out.println(res);
+			
+			for(int i=1;i<res.size()-1;i++){
+				int curr=res.get(i);
+				product=(product*curr)%1000000007;
+			}
+		
+			return;
+
+		}
+		if (idx == arr.length) {
+			return;
+		}
+		res.add(arr[idx]);
+		solve(arr, idx + 1, res, k);
+		res.remove(res.size() - 1);
+		solve(arr, idx + 1, res, k);
 	}
 
 }
