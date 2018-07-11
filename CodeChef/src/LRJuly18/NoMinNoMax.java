@@ -22,13 +22,13 @@ public class NoMinNoMax {
 			Arrays.sort(arr);
 
 			solve(arr, 0, new ArrayList<>(), k);
-			System.out.println(product);
-			product = 1;
+			System.out.println(resu);
+			resu = 1;
 		}
 
 	}
 
-	static long product = 1;
+	static long resu = 1;
 	
 
 	public static void solve(int[] arr, int idx, ArrayList<Integer> res, int k) {
@@ -38,7 +38,7 @@ public class NoMinNoMax {
 			
 			for(int i=1;i<res.size()-1;i++){
 				int curr=res.get(i);
-				product=(product*curr)%1000000007;
+				resu=(resu*curr)%1000000007;
 			}
 		
 			return;
